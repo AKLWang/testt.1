@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- 定义模板内容片段 -->
+<div th:fragment="copyright(year)" style="text-align: center">
+  <h5>© [[${year}]] xxx </h5>
+  <h5 th:text="|© ${year} xxx|"> </h5>
+</div>
+</body>
+</html>

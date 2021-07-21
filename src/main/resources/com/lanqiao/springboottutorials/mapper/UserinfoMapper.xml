@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.springboottutorials.mapper.UserinfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.lanqiao.springboottutorials.model.Userinfo">
+            <id property="userid" column="userID" jdbcType="INTEGER"/>
+            <result property="loginname" column="loginName" jdbcType="VARCHAR"/>
+            <result property="loginpass" column="loginPass" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        userID,loginName,loginPass
+    </sql>
+
+    <select id="selectUserinfo" parameterType="userinfo" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from USERINFO
+        where loginName=#{loginname} and loginPass=#{loginpass}
+    </select>
+</mapper>

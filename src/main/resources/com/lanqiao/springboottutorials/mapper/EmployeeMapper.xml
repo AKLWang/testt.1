@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanqiao.springboottutorials.mapper.EmployeeMapper">
+
+    <resultMap id="BaseResultMap" type="com.lanqiao.springboottutorials.model.Employee">
+        <id property="empno" column="empno" jdbcType="INTEGER"/>
+        <result property="ename" column="ename" jdbcType="VARCHAR"/>
+        <result property="job" column="job" jdbcType="VARCHAR"/>
+        <result property="mgr" column="mgr" jdbcType="INTEGER"/>
+        <result property="hiredate" column="hiredate" jdbcType="DATE"/>
+        <result property="sal" column="sal" jdbcType="DOUBLE"/>
+        <result property="comm" column="comm" jdbcType="DOUBLE"/>
+        <result property="deptno" column="deptno" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        empno,ename,job,
+        mgr,hiredate,sal,
+        comm,deptno
+    </sql>
+
+    <select id="selectEmployee" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from employee
+    </select>
+
+    <select id="select" parameterType="employee" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from employee
+        <where>
+            <if test="emp.ename != null and emp.ename.trim().length()>0" >
+                AND ENAME like "%"#{emp.ename}"%"
+            </if>
+            <if test="emp.job != null and emp.job.trim().length()>0">
+                AND JOB=#{emp.job}
+            </if>
+            <if test="emp.deptno != null">
+            AND DEPTNO=#{emp.deptno}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" parameterType="int" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from employee
+        where empno=#{empno}
+    </select>
+
+    <update id="updateEmployeeById" parameterType="employee">
+        update employee
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ename != null">ename=#{ename},</if>
+            <if test="job != null">job=#{job},</if>
+            <if test="mgr != null">mgr=#{mgr},</if>
+            <if test="hiredate != null">hiredate=#{hiredate},</if>
+            <if test="sal != null">sal=#{sal},</if>
+            <if test="comm != null">comm=#{comm},</if>
+            <if test="deptno != null">deptno=#{deptno},</if>
+        </trim>
+        where empno=#{empno}
+    </update>
+
+    <delete id="deleteEmployeeById" parameterType="int">
+        delete from employee where empno=#{empno}
+    </delete>
+
+    <insert id="insertEmployee" parameterType="employee">
+        insert into employee (ename,job,mgr,hiredate,sal,comm,deptno)
+        values(#{ename},#{job},#{mgr},#{hiredate},#{sal},#{comm},#{deptno})
+    </insert>
+</mapper>
